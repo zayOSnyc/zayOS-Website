@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZayOS — Mission Control</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Space Grotesk', sans-serif; background: #0A0A0A; color: #fff; display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    .sidebar { width: 200px; background: #0D0D0D; border-right: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; flex-shrink: 0; }
+    .sidebar__header { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 10px; }
+    .sidebar__header svg { width: 20px; height: 20px; color: #9D4EDD; }
+    .sidebar__header span { font-size: 0.95rem; font-weight: 700; }
+    .sidebar__nav { flex: 1; overflow-y: auto; padding: 8px 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 0.85rem; color: #888; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+    .nav-item:hover { background: rgba(157,78,221,0.08); color: #ccc; }
+    .nav-item.active { background: rgba(157,78,221,0.12); color: #fff; border-left-color: #9D4EDD; }
+    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+    .nav-item .badge { margin-left: auto; background: #9D4EDD; color: #fff; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 8px; }
+
+    /* ── Main Content ── */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .topbar__left { display: flex; flex-direction: column; }
+    .topbar__label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666; }
+    .topbar__title { font-size: 1.3rem; font-weight: 700; }
+    .topbar__right { display: flex; align-items: center; gap: 16px; }
+    .live-badge { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #66BB6A; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #66BB6A; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .topbar-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #aaa; padding: 6px 14px; border-radius: 6px; font-family: inherit; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+    .topbar-btn:hover { background: rgba(157,78,221,0.15); border-color: rgba(157,78,221,0.3); color: #fff; }
+
+    /* ── Content Area (scrollable) ── */
+    .content { flex: 1; overflow-y: auto; padding: 24px; }
+
+    /* ── Pipeline View ── */
+    .pipeline-section { margin-bottom: 32px; }
+    .pipeline-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #666; margin-bottom: 8px; }
+    .pipeline-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+    .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .pipeline-col { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; min-height: 200px; }
+    .pipeline-col__header { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #666; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; justify-content: space-between; }
+    .pipeline-col__count { background: rgba(157,78,221,0.2); color: #9D4EDD; padding: 1px 6px; border-radius: 4px; font-size: 0.65rem; }
+    .task-card { background: #161616; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+    .task-card:hover { border-color: rgba(157,78,221,0.4); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+    .task-card.done { opacity: 0.4; }
+    .task-card__title { font-size: 0.82rem; font-weight: 500; margin-bottom: 4px; }
+    .task-card__meta { font-size: 0.7rem; color: #666; display: flex; align-items: center; gap: 6px; }
+    .task-card__agent { display: inline-flex; align-items: center; gap: 4px; background: rgba(157,78,221,0.12); color: #9D4EDD; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 600; }
+    .task-card__priority { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .priority-high { background: #EF5350; }
+    .priority-med { background: #FFD54F; }
+    .priority-low { background: #66BB6A; }
+
+    /* ── Agent Cards (for Agents view) ── */
+    .agents-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .agent-card { background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 20px; transition: all 0.2s; }
+    .agent-card:hover { border-color: rgba(157,78,221,0.3); }
+    .agent-card__header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .agent-card__emoji { font-size: 1.6rem; }
+    .agent-card__name { font-size: 1rem; font-weight: 700; }
+    .agent-card__role { font-size: 0.75rem; color: #9D4EDD; }
+    .agent-card__model { font-size: 0.7rem; color: #666; margin-bottom: 8px; }
+    .agent-card__status { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .status-active { background: #66BB6A; }
+    .status-idle { background: #666; }
+    .agent-card__task { font-size: 0.78rem; color: #aaa; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); }
+
+    /* ── Stats Row ── */
+    .stats-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat { background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px; text-align: center; }
+    .stat__number { font-size: 1.6rem; font-weight: 700; color: #9D4EDD; }
+    .stat__label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+    /* ── Goals Section ── */
+    .goals-list { display: flex; flex-direction: column; gap: 8px; }
+    .goal-row { display: flex; align-items: center; gap: 12px; background: #111; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 12px 16px; }
+    .goal-row__icon { font-size: 1.2rem; }
+    .goal-row__name { font-size: 0.85rem; font-weight: 600; flex: 1; }
+    .goal-row__status { font-size: 0.75rem; color: #888; }
+    .goal-row__flag { font-size: 0.7rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+    .flag-red { background: rgba(239,83,80,0.15); color: #EF5350; }
+    .flag-yellow { background: rgba(255,213,79,0.15); color: #FFD54F; }
+    .flag-green { background: rgba(102,187,106,0.15); color: #66BB6A; }
+
+    /* ── Section Headers ── */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .section-header h2 { font-size: 1rem; font-weight: 700; }
+    .section-header .section-badge { font-size: 0.7rem; color: #666; }
+
+    /* ── Views (show/hide) ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #555; }
+  </style>
+</head>
+<body>
+
+  <!-- ════════ SIDEBAR ════════ -->
+  <div class="sidebar">
+    <div class="sidebar__header">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+      <span>Mission Control</span>
+    </div>
+    <div class="sidebar__nav">
+      <div class="nav-item active" data-view="pipeline"><span class="icon">📋</span> Tasks <span class="badge" id="taskBadge">12</span></div>
+      <div class="nav-item" data-view="agents"><span class="icon">🤖</span> Agents</div>
+      <div class="nav-item" data-view="pipeline-sales"><span class="icon">💰</span> Pipeline</div>
+      <div class="nav-item" data-view="goals"><span class="icon">🎯</span> Goals</div>
+      <div class="nav-item" data-view="content"><span class="icon">✍️</span> Content</div>
+      <div class="nav-item" data-view="scanner"><span class="icon">📈</span> Scanner</div>
+      <div class="nav-item" data-view="system"><span class="icon">⚙️</span> System</div>
+    </div>
+  </div>
+
+  <!-- ════════ MAIN ════════ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar__left">
+        <span class="topbar__label">ZayOS Operations</span>
+        <span class="topbar__title" id="viewTitle">Task Pipeline</span>
+      </div>
+      <div class="topbar__right">
+        <div class="live-badge"><div class="live-dot"></div> Live</div>
+        <button class="topbar-btn" onclick="location.reload()">↻ Refresh</button>
+        <button class="topbar-btn" onclick="saveAll()">💾 Save</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ═══ STATS ROW ═══ -->
+      <div class="stats-row">
+        <div class="stat"><div class="stat__number" id="statTodo">8</div><div class="stat__label">To Do</div></div>
+        <div class="stat"><div class="stat__number" id="statInProgress">3</div><div class="stat__label">In Progress</div></div>
+        <div class="stat"><div class="stat__number" id="statDone">0</div><div class="stat__label">Done</div></div>
+        <div class="stat"><div class="stat__number">0</div><div class="stat__label">Outreach</div></div>
+        <div class="stat"><div class="stat__number">$0</div><div class="stat__label">Revenue</div></div>
+        <div class="stat"><div class="stat__number">$5K</div><div class="stat__label">Goal</div></div>
+      </div>
+
+      <!-- ═══ VIEW: TASK PIPELINE ═══ -->
+      <div class="view active" id="view-pipeline">
+        <div class="pipeline-section">
+          <div class="pipeline-label">March 19, 2026</div>
+          <div class="pipeline-title">Task Pipeline</div>
+          <div class="pipeline">
+
+            <!-- BACKLOG -->
+            <div class="pipeline-col" id="col-backlog">
+              <div class="pipeline-col__header">Backlog <span class="pipeline-col__count" id="count-backlog">5</span></div>
+              <div class="task-card"><div class="task-card__title">Set up Notion account</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> This week</div></div>
+              <div class="task-card"><div class="task-card__title">Record first YouTube Short</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> This week</div></div>
+              <div class="task-card"><div class="task-card__title">Deploy website to Vercel</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> This week</div></div>
+              <div class="task-card"><div class="task-card__title">Set up Mailchimp</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> This week</div></div>
+              <div class="task-card"><div class="task-card__title">Post Reddit lead magnet</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> This week</div></div>
+            </div>
+
+            <!-- TO DO -->
+            <div class="pipeline-col" id="col-todo">
+              <div class="pipeline-col__header">To Do <span class="pipeline-col__count" id="count-todo">5</span></div>
+              <div class="task-card"><div class="task-card__title">🔴 HIPAA Certification</div><div class="task-card__meta"><span class="task-card__priority priority-high"></span> Deadline Mar 31 <span class="task-card__agent">⚡ Zay</span></div></div>
+              <div class="task-card"><div class="task-card__title">Send 5 outreach DMs</div><div class="task-card__meta"><span class="task-card__priority priority-high"></span> #1 priority <span class="task-card__agent">💼 Zaine</span></div></div>
+              <div class="task-card"><div class="task-card__title">Share credit card balances</div><div class="task-card__meta"><span class="task-card__priority priority-high"></span> Debt tracking blind <span class="task-card__agent">⚡ Zora</span></div></div>
+              <div class="task-card"><div class="task-card__title">Test website + give feedback</div><div class="task-card__meta"><span class="task-card__priority priority-med"></span> Today <span class="task-card__agent">⚡ Zay</span></div></div>
+              <div class="task-card"><div class="task-card__title">Post tweet #2</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> 2 min <span class="task-card__agent">✍️ Zayla</span></div></div>
+            </div>
+
+            <!-- IN PROGRESS -->
+            <div class="pipeline-col" id="col-progress">
+              <div class="pipeline-col__header">In Progress <span class="pipeline-col__count" id="count-progress">3</span></div>
+              <div class="task-card"><div class="task-card__title">Website polish (10/10)</div><div class="task-card__meta"><span class="task-card__priority priority-med"></span> Polishing <span class="task-card__agent">💻 Zara</span></div></div>
+              <div class="task-card"><div class="task-card__title">New service tiers</div><div class="task-card__meta"><span class="task-card__priority priority-med"></span> HTML ready <span class="task-card__agent">💼 Zaine</span></div></div>
+              <div class="task-card"><div class="task-card__title">SONY $22.50 Call 4/17</div><div class="task-card__meta"><span class="task-card__priority priority-med"></span> Holding +33% <span class="task-card__agent">📈 Scanner</span></div></div>
+            </div>
+
+            <!-- REVIEW -->
+            <div class="pipeline-col" id="col-review">
+              <div class="pipeline-col__header">Review <span class="pipeline-col__count" id="count-review">2</span></div>
+              <div class="task-card"><div class="task-card__title">Outreach messages (5)</div><div class="task-card__meta"><span class="task-card__priority priority-med"></span> Ready to send <span class="task-card__agent">💼 Zaine</span></div></div>
+              <div class="task-card"><div class="task-card__title">7-day tweet schedule</div><div class="task-card__meta"><span class="task-card__priority priority-low"></span> Ready to post <span class="task-card__agent">✍️ Zayla</span></div></div>
+            </div>
+
+            <!-- DONE -->
+            <div class="pipeline-col" id="col-done">
+              <div class="pipeline-col__header">Done <span class="pipeline-col__count" id="count-done">8</span></div>
+              <div class="task-card done"><div class="task-card__title">Brand kit complete</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+              <div class="task-card done"><div class="task-card__title">Social Scanner built</div><div class="task-card__meta"><span class="task-card__agent">💻 Zara</span></div></div>
+              <div class="task-card done"><div class="task-card__title">Website built (4 pages)</div><div class="task-card__meta"><span class="task-card__agent">💻 Zara</span></div></div>
+              <div class="task-card done"><div class="task-card__title">Prospect list (5 targets)</div><div class="task-card__meta"><span class="task-card__agent">💼 Zaine</span></div></div>
+              <div class="task-card done"><div class="task-card__title">Camillo methodology</div><div class="task-card__meta"><span class="task-card__agent">🔍 Zaire</span></div></div>
+              <div class="task-card done"><div class="task-card__title">Meal plan + prep guide</div><div class="task-card__meta"><span class="task-card__agent">⚡ Zora</span></div></div>
+              <div class="task-card done"><div class="task-card__title">32 skills installed</div><div class="task-card__meta"><span class="task-card__agent">⚡ Zarvis</span></div></div>
+              <div class="task-card done"><div class="task-card__title">All agents briefed</div><div class="task-card__meta"><span class="task-card__agent">⚡ Zarvis</span></div></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: AGENTS ═══ -->
+      <div class="view" id="view-agents">
+        <div class="section-header"><h2>Agent Status Board</h2><span class="section-badge">6 agents</span></div>
+        <div class="agents-grid">
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">⚡</span><div><div class="agent-card__name">Zarvis</div><div class="agent-card__role">CEO / Orchestrator</div></div></div>
+            <div class="agent-card__model">Claude Opus 4.6</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: Updated Mission Control, website, scanner upgrades</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">🔍</span><div><div class="agent-card__name">Zaire</div><div class="agent-card__role">Research & Intelligence</div></div></div>
+            <div class="agent-card__model">Claude Sonnet 4.6</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: Chris Camillo deep dive + social media skills audit</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">💻</span><div><div class="agent-card__name">Zara</div><div class="agent-card__role">Code & Build</div></div></div>
+            <div class="agent-card__model">Claude Sonnet 4.6</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: Website polish + Social Scanner trade upgrades</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">⚡</span><div><div class="agent-card__name">Zora</div><div class="agent-card__role">Life Ops & Accountability</div></div></div>
+            <div class="agent-card__model">Claude Haiku 4.5</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: Meal plan + accountability system + goals tracker</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">💼</span><div><div class="agent-card__name">Zaine</div><div class="agent-card__role">Business Development</div></div></div>
+            <div class="agent-card__model">Claude Sonnet 4.6</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: 5 prospect outreach + 3-tier service restructure</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-card__header"><span class="agent-card__emoji">✍️</span><div><div class="agent-card__name">Zayla</div><div class="agent-card__role">Content & Marketing</div></div></div>
+            <div class="agent-card__model">Claude Haiku 4.5</div>
+            <div class="agent-card__status"><div class="status-dot status-active"></div> Active</div>
+            <div class="agent-card__task">Last: Brand kit + 7-day content calendar + launch campaign</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: SALES PIPELINE ═══ -->
+      <div class="view" id="view-pipeline-sales">
+        <div class="section-header"><h2>Sales Pipeline</h2><span class="section-badge">$0 / $5,000 goal</span></div>
+        <div class="pipeline" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Leads <span class="pipeline-col__count">5</span></div>
+            <div class="task-card"><div class="task-card__title">Spark Social Agency</div><div class="task-card__meta">NYC social media agency</div></div>
+            <div class="task-card"><div class="task-card__title">The Lunchbox Agency</div><div class="task-card__meta">NYC email/SMS agency</div></div>
+            <div class="task-card"><div class="task-card__title">Butterfly Studio Salon</div><div class="task-card__meta">30-year NYC salon</div></div>
+            <div class="task-card"><div class="task-card__title">Kira Stokes / KSFIT</div><div class="task-card__meta">Online fitness coach</div></div>
+            <div class="task-card"><div class="task-card__title">JillFit / Jill Coleman</div><div class="task-card__meta">Fitness coaching empire</div></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Contacted <span class="pipeline-col__count">0</span></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Call Booked <span class="pipeline-col__count">0</span></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Closed 💰 <span class="pipeline-col__count">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: GOALS ═══ -->
+      <div class="view" id="view-goals">
+        <div class="section-header"><h2>2026 Goals</h2><span class="section-badge">8 goals tracked</span></div>
+        <div class="goals-list">
+          <div class="goal-row"><span class="goal-row__icon">🏋️</span><span class="goal-row__name">Fitness — 202 → 185 lbs</span><span class="goal-row__status">PPL 3x/week</span><span class="goal-row__flag flag-yellow">In Progress</span></div>
+          <div class="goal-row"><span class="goal-row__icon">💳</span><span class="goal-row__name">Debt — Avalanche Method</span><span class="goal-row__status">Balances unknown</span><span class="goal-row__flag flag-red">Need Data</span></div>
+          <div class="goal-row"><span class="goal-row__icon">💰</span><span class="goal-row__name">Savings — $300 / $1,000</span><span class="goal-row__status">$150/month</span><span class="goal-row__flag flag-green">On Track</span></div>
+          <div class="goal-row"><span class="goal-row__icon">📋</span><span class="goal-row__name">HIPAA Certification</span><span class="goal-row__status">Deadline: March 31</span><span class="goal-row__flag flag-red">URGENT</span></div>
+          <div class="goal-row"><span class="goal-row__icon">📚</span><span class="goal-row__name">Read 6 Books</span><span class="goal-row__status">0 / 6</span><span class="goal-row__flag flag-yellow">Behind</span></div>
+          <div class="goal-row"><span class="goal-row__icon">🔥</span><span class="goal-row__name">Seek Discomfort</span><span class="goal-row__status">Ongoing</span><span class="goal-row__flag flag-green">Active</span></div>
+          <div class="goal-row"><span class="goal-row__icon">✈️</span><span class="goal-row__name">Italy Trip</span><span class="goal-row__status">By Oct 31</span><span class="goal-row__flag flag-yellow">Contingent</span></div>
+          <div class="goal-row"><span class="goal-row__icon">🚀</span><span class="goal-row__name">ZayOS — $5K/month</span><span class="goal-row__status">$0 revenue — Day 2</span><span class="goal-row__flag flag-red">Day 2</span></div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: CONTENT ═══ -->
+      <div class="view" id="view-content">
+        <div class="section-header"><h2>Content Calendar</h2><span class="section-badge">@zayosnyc</span></div>
+        <div class="pipeline" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Drafted <span class="pipeline-col__count">7</span></div>
+            <div class="task-card"><div class="task-card__title">Tweet Day 1 — Behind the scenes</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+            <div class="task-card"><div class="task-card__title">Tweet Day 2 — Client value</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+            <div class="task-card"><div class="task-card__title">Tweet Day 3 — NYC identity</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+            <div class="task-card"><div class="task-card__title">LinkedIn post #2</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+            <div class="task-card"><div class="task-card__title">YouTube Short script</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+            <div class="task-card"><div class="task-card__title">Reddit lead magnet post</div><div class="task-card__meta"><span class="task-card__agent">💼 Zaine</span></div></div>
+            <div class="task-card"><div class="task-card__title">Instagram carousel (5 slides)</div><div class="task-card__meta"><span class="task-card__agent">✍️ Zayla</span></div></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Scheduled <span class="pipeline-col__count">0</span></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Posted <span class="pipeline-col__count">2</span></div>
+            <div class="task-card done"><div class="task-card__title">Launch tweet</div><div class="task-card__meta">X — Mar 18</div></div>
+            <div class="task-card done"><div class="task-card__title">LinkedIn announcement</div><div class="task-card__meta">LinkedIn — Mar 18</div></div>
+          </div>
+          <div class="pipeline-col">
+            <div class="pipeline-col__header">Engagement <span class="pipeline-col__count">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: SCANNER ═══ -->
+      <div class="view" id="view-scanner">
+        <div class="section-header"><h2>Social Arbitrage Scanner</h2><span class="section-badge">Last scan: 8:00 AM</span></div>
+        <div class="goals-list">
+          <div class="goal-row"><span class="goal-row__icon">📞</span><span class="goal-row__name">$RDDT — CALL OPTION 🆕</span><span class="goal-row__status">85/100 · Positive · 14 mentions</span><span class="goal-row__flag flag-green">CALL</span></div>
+          <div class="goal-row"><span class="goal-row__icon">📞</span><span class="goal-row__name">$SONY — CALL OPTION</span><span class="goal-row__status">78/100 · Positive · 4 mentions</span><span class="goal-row__flag flag-green">HOLDING +33%</span></div>
+          <div class="goal-row"><span class="goal-row__icon">👀</span><span class="goal-row__name">$NVDA — MONITOR</span><span class="goal-row__status">77/100 · Neutral · 4 mentions</span><span class="goal-row__flag flag-yellow">WATCH</span></div>
+          <div class="goal-row"><span class="goal-row__icon">🔴</span><span class="goal-row__name">$META — CAUTION</span><span class="goal-row__status">80/100 · Negative · 7 mentions</span><span class="goal-row__flag flag-red">AVOID</span></div>
+        </div>
+      </div>
+
+      <!-- ═══ VIEW: SYSTEM ═══ -->
+      <div class="view" id="view-system">
+        <div class="section-header"><h2>System Status</h2><span class="section-badge">All systems operational</span></div>
+        <div class="goals-list">
+          <div class="goal-row"><span class="goal-row__icon">⚡</span><span class="goal-row__name">Gateway</span><span class="goal-row__status">Running · Port 18789</span><span class="goal-row__flag flag-green">Online</span></div>
+          <div class="goal-row"><span class="goal-row__icon">📡</span><span class="goal-row__name">Telegram (6 bots)</span><span class="goal-row__status">All connected</span><span class="goal-row__flag flag-green">Online</span></div>
+          <div class="goal-row"><span class="goal-row__icon">🔧</span><span class="goal-row__name">Skills</span><span class="goal-row__status">32 active / 80 total</span><span class="goal-row__flag flag-green">Ready</span></div>
+          <div class="goal-row"><span class="goal-row__icon">⏰</span><span class="goal-row__name">Social Scanner Cron</span><span class="goal-row__status">Daily 8:00 AM ET</span><span class="goal-row__flag flag-green">Active</span></div>
+          <div class="goal-row"><span class="goal-row__icon">📬</span><span class="goal-row__name">Daily Brief Cron</span><span class="goal-row__status">Daily 9:00 AM ET</span><span class="goal-row__flag flag-green">Active</span></div>
+          <div class="goal-row"><span class="goal-row__icon">💳</span><span class="goal-row__name">Claude Max Subscription</span><span class="goal-row__status">$100/month — all agents</span><span class="goal-row__flag flag-green">Active</span></div>
+          <div class="goal-row"><span class="goal-row__icon">🔑</span><span class="goal-row__name">Gemini API (fallback)</span><span class="goal-row__status">Emergency only</span><span class="goal-row__flag flag-yellow">Standby</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+// ── Sidebar Navigation ──
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    item.classList.add('active');
+    const viewId = item.dataset.view;
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + viewId).classList.add('active');
+    const titles = {
+      'pipeline': 'Task Pipeline',
+      'agents': 'Agent Status Board',
+      'pipeline-sales': 'Sales Pipeline',
+      'goals': '2026 Goals',
+      'content': 'Content Calendar',
+      'scanner': 'Social Arbitrage Scanner',
+      'system': 'System Status'
+    };
+    document.getElementById('viewTitle').textContent = titles[viewId] || 'Mission Control';
+  });
+});
+
+// ── Task Card Click (toggle done) ──
+document.querySelectorAll('.task-card').forEach(card => {
+  card.addEventListener('click', () => {
+    card.classList.toggle('done');
+    updateCounts();
+  });
+});
+
+function updateCounts() {
+  const done = document.querySelectorAll('#view-pipeline .task-card.done').length;
+  const total = document.querySelectorAll('#view-pipeline .task-card').length;
+  document.getElementById('statDone').textContent = done;
+  document.getElementById('statTodo').textContent = total - done;
+}
+
+function saveAll() {
+  const states = {};
+  document.querySelectorAll('.task-card').forEach((card, i) => {
+    states[i] = card.classList.contains('done');
+  });
+  localStorage.setItem('zayos_mc_state', JSON.stringify(states));
+  alert('✅ Progress saved!');
+}
+
+// Load saved state
+const saved = localStorage.getItem('zayos_mc_state');
+if (saved) {
+  const states = JSON.parse(saved);
+  document.querySelectorAll('.task-card').forEach((card, i) => {
+    if (states[i]) card.classList.add('done');
+  });
+  updateCounts();
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact ZayOS — Let's build something. Reach out to start your AI operations journey." />
+
+  <!-- Favicon: Inline SVG for the purple "Z" -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 style=%22fill: #6a0dad;%22>Z</text></svg>">
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact — ZayOS" />
+  <meta property="og:description" content="Let's build something. Reach out to start your AI operations journey." />
+  <meta property="og:image" content="https://zayos.ai/images/logo.jpg" />
+  <meta property="og:url" content="https://zayos.ai/contact.html" />
+  <meta property="og:site_name" content="ZayOS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact — ZayOS" />
+  <meta name="twitter:description" content="Let's build something. Reach out to start your AI operations journey." />
+  <meta name="twitter:image" content="https://zayos.ai/images/logo.jpg" />
+
+  <title>Contact — ZayOS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav" id="navbar">
+    <div class="nav__inner">
+
+      <a href="index.html" class="nav__logo nav__logo--centered">zay<span>OS</span></a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html" class="nav__link" aria-label="Go to Home page">Home</a></li>
+        <li><a href="about.html" class="nav__link" aria-label="Go to About page">About</a></li>
+        <li><a href="services.html" class="nav__link" aria-label="Go to Services page">Services</a></li>
+        <li><a href="contact.html" class="nav__link active" aria-label="Go to Contact page">Contact</a></li>
+      </ul>
+
+      <div class="nav__toggle" id="navToggle" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       PAGE HERO — "Let's Build Something."
+       ============================================================ -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero__eyebrow">Get In Touch</span>
+      <h1 class="page-hero__title">Let's Build<br /><span class="gradient-text">Something.</span></h1>
+      <p class="page-hero__subtitle">
+        Drop us a message. No sales script, no runaround —
+        just a real conversation about your business.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CONTACT FORM + INFO
+       ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- ---- Left: Contact Form ---- -->
+        <div class="fade-in">
+          <!-- 
+              ZARA: Add your Formspree endpoint URL to the action attribute below.
+              Example: action="https://formspree.io/f/YOUR_FORM_ID"
+            -->
+          <form class="form" name="contact" method="POST" action="https://formspree.io/f/YOUR_FORM_ID" novalidate>
+
+            <!-- Name -->
+            <div class="form__group">
+              <label class="form__label" for="name">Your Name</label>
+              <input
+                class="form__input"
+                type="text"
+                id="name"
+                name="name"
+                placeholder="What should we call you?"
+                required
+                autocomplete="name"
+                aria-required="true"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="form__group">
+              <label class="form__label" for="email">Email Address</label>
+              <input
+                class="form__input"
+                type="email"
+                id="email"
+                name="email"
+                placeholder="your@email.com"
+                required
+                autocomplete="email"
+                aria-required="true"
+              />
+            </div>
+
+            <!-- Business Name -->
+            <div class="form__group">
+              <label class="form__label" for="business">Business Name</label>
+              <input
+                class="form__input"
+                type="text"
+                id="business"
+                name="business"
+                placeholder="What's your business called?"
+                autocomplete="organization"
+              />
+            </div>
+
+            <!-- Message -->
+            <div class="form__group">
+              <label class="form__label" for="message">Message</label>
+              <textarea
+                class="form__textarea"
+                id="message"
+                name="message"
+                placeholder="Tell us what you're working on, what's slowing you down, or what you want to build. The more context, the better."
+                required
+                aria-required="true"
+              ></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn--primary btn--lg form__submit" aria-label="Send contact message">
+              Send Message ✦
+            </button>
+
+          </form>
+        </div>
+
+        <!-- ---- Right: Contact Info ---- -->
+        <div class="contact-info fade-in">
+
+          <h2 class="contact-info__title">Other Ways<br />to Reach Us.</h2>
+
+          <!-- Email -->
+          <div class="contact-info__item">
+            <div class="contact-info__icon">✉️</div>
+            <div>
+              <p class="contact-info__label">Email</p>
+              <p class="contact-info__value">
+                <a href="mailto:zayosnyc@gmail.com">zayosnyc@gmail.com</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- X / Twitter -->
+          <div class="contact-info__item">
+            <div class="contact-info__icon">𝕏</div>
+            <div>
+              <p class="contact-info__label">X (Twitter)</p>
+              <p class="contact-info__value">
+                <a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer">@zayosnyc</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- YouTube -->
+          <div class="contact-info__item">
+            <div class="contact-info__icon">▶</div>
+            <div>
+              <p class="contact-info__label">YouTube</p>
+              <p class="contact-info__value">
+                <a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer">@zayosnyc</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="contact-info__item">
+            <div class="contact-info__icon">🗽</div>
+            <div>
+              <p class="contact-info__label">Based In</p>
+              <p class="contact-info__value">Queens, New York City</p>
+            </div>
+          </div>
+
+          <!-- Social CTA -->
+          <div class="social-links">
+            <a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow ZayOS on X">
+              𝕏 &nbsp;Follow on X
+            </a>
+            <a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Subscribe to ZayOS on YouTube">
+              ▶ &nbsp;YouTube
+            </a>
+          </div>
+
+          <!-- Response Time Note -->
+          <div class="response-note">
+            <p>
+              <strong class="response-note__strong">⚡ Quick reply.</strong><br />
+              We typically respond within 24 hours. For urgent builds or same-day inquiries,
+              DM us on X.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       BOTTOM CTA STRIP
+       ============================================================ -->
+  <section class="section section--alt">
+    <div class="container text-center">
+      <div class="divider"></div>
+      <h2 class="section-title cta-strip__title">
+        NYC Never Sleeps.
+      </h2>
+      <p class="cta-strip__text">
+        So neither do we. Your business deserves 24/7 operations. Let's build that.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+
+        <div>
+          <div class="footer__brand-logo">
+            <span class="footer__logo-text">zay<span>OS</span></span>
+          </div>
+          <p class="footer__tagline">
+            Your Business. Always On.<br />
+            AI-powered operations built for NYC small businesses.
+          </p>
+          <div class="footer__social">
+            <a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__social-btn" title="X / Twitter" aria-label="Follow ZayOS on X">𝕏</a>
+            <a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__social-btn" title="YouTube" aria-label="Subscribe to ZayOS on YouTube">▶</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Navigation</p>
+          <ul class="footer__links">
+            <li><a href="index.html" class="footer__link" aria-label="Go to Home page">Home</a></li>
+            <li><a href="about.html" class="footer__link" aria-label="Go to About page">About</a></li>
+            <li><a href="services.html" class="footer__link" aria-label="Go to Services page">Services</a></li>
+            <li><a href="contact.html" class="footer__link" aria-label="Go to Contact page">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <ul class="footer__links">
+            <li><a href="mailto:zayosnyc@gmail.com" class="footer__link">zayosnyc@gmail.com</a></li>
+            <li><a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__link">@zayosnyc on X</a></li>
+            <li><a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__link">@zayosnyc on YouTube</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__divider"></div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; <span>CIRCA2026</span> ZayOS. All rights reserved.</p>
+        <p class="footer__copy">Built in <span>Queens, NYC</span>.</p>
+      </div>
+    </div>
+  </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top of page">↑</button>
+  
+    <script src="js/main.js"></script>
+  
+    <!-- NoScript Fallback -->
+    <noscript>
+      <div class="noscript-fallback">
+        Please enable JavaScript to get the full experience of this site.
+      </div>
+    </noscript>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZayOS Services — AI solutions from $99 strategy sessions to dedicated on-site AI servers. Built for NYC small businesses." />
+
+  <!-- Favicon: Inline SVG for the purple "Z" -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 style=%22fill: #6a0dad;%22>Z</text></svg>">
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Services — ZayOS" />
+  <meta property="og:description" content="AI solutions from $99 strategy sessions to dedicated on-site AI servers. Built for NYC small businesses." />
+  <meta property="og:image" content="https://zayos.ai/images/logo.jpg" />
+  <meta property="og:url" content="https://zayos.ai/services.html" />
+  <meta property="og:site_name" content="ZayOS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Services — ZayOS" />
+  <meta name="twitter:description" content="AI solutions from $99 strategy sessions to dedicated on-site AI servers. Built for NYC small businesses." />
+  <meta name="twitter:image" content="https://zayos.ai/images/logo.jpg" />
+
+  <title>Services — ZayOS</title>
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* ── Tier Section Labels ── */
+    .tier-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .tier-label--low {
+      background: rgba(46, 204, 113, 0.12);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+    .tier-label--mid {
+      background: rgba(241, 196, 15, 0.12);
+      color: #f1c40f;
+      border: 1px solid rgba(241, 196, 15, 0.3);
+    }
+    .tier-label--high {
+      background: rgba(231, 76, 60, 0.12);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    /* ── Service Tag (pill inside cards) ── */
+    .service-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      background: rgba(157, 78, 221, 0.15);
+      color: var(--purple-accent);
+      border: 1px solid rgba(157, 78, 221, 0.3);
+    }
+
+    .service-tag--green {
+      background: rgba(46, 204, 113, 0.12);
+      color: #2ecc71;
+      border-color: rgba(46, 204, 113, 0.3);
+    }
+
+    .service-tag--yellow {
+      background: rgba(241, 196, 15, 0.12);
+      color: #f1c40f;
+      border-color: rgba(241, 196, 15, 0.3);
+    }
+
+    .service-tag--red {
+      background: rgba(231, 76, 60, 0.12);
+      color: #e74c3c;
+      border-color: rgba(231, 76, 60, 0.3);
+    }
+
+    /* ── Premium card glow for Mac Mini ── */
+    .card--premium {
+      border-color: rgba(231, 76, 60, 0.5);
+      background: linear-gradient(135deg, var(--bg-dark-alt) 0%, rgba(231, 76, 60, 0.04) 100%);
+    }
+    .card--premium:hover {
+      box-shadow: 0 10px 30px rgba(231, 76, 60, 0.15);
+    }
+
+    /* ── Price breakdown styling ── */
+    .card__price-breakdown {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+    .card__price-breakdown strong {
+      color: var(--text-primary);
+    }
+
+    /* ── Tier divider ── */
+    .tier-divider {
+      text-align: center;
+      margin: 0 auto 20px auto;
+      max-width: 700px;
+    }
+    .tier-divider__line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav class="nav" id="navbar">
+    <div class="nav__inner">
+
+      <a href="index.html" class="nav__logo nav__logo--centered">zay<span>OS</span></a>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="index.html" class="nav__link">Home</a></li>
+        <li><a href="about.html" class="nav__link">About</a></li>
+        <li><a href="services.html" class="nav__link active">Services</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+
+      <div class="nav__toggle" id="navToggle" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ============================================================
+       PAGE HERO
+       ============================================================ -->
+  <section class="page-hero">
+    <div class="container">
+      <span class="hero__eyebrow">Pricing &amp; Services</span>
+      <h1 class="page-hero__title">AI That Works<br /><span class="gradient-text">At Every Level.</span></h1>
+      <p class="page-hero__subtitle">
+        Nine services across three tiers — from a $99 quick win to a dedicated AI server
+        running 24/7 at your location. Start where it makes sense. Scale when you're ready.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       🟢 LOW TIER — Entry Level ($99–$299)
+       ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center text-center--margin-bottom-lg">
+        <span class="tier-label tier-label--low">🟢 Entry Level</span>
+        <h2 class="section-title">Start Small. See Results Fast.</h2>
+        <p class="section-subtitle section-subtitle--no-margin-bottom">
+          Low-risk, high-impact entry points. See what AI can do for your business
+          before committing to anything bigger. No contracts, no BS.
+        </p>
+      </div>
+
+      <div class="cards-grid fade-in-group cards-grid--constrained">
+
+        <!-- LOW 1: AI Power Hour -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--green">Strategy</span>
+          <h3 class="card__title">AI Power Hour</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            60 minutes. Your business under a microscope. Walk away with a custom AI
+            roadmap showing exactly where automation saves you time and money.
+          </p>
+          <p class="card__price">$149</p>
+          <p class="card__price-note">One-time · Roadmap delivered in 48hrs</p>
+          <ul class="card__features">
+            <li>60-minute 1-on-1 strategy call</li>
+            <li>Full workflow &amp; tools audit</li>
+            <li>Top 3 automation opportunities identified</li>
+            <li>Custom AI roadmap document</li>
+            <li>ROI estimate for each opportunity</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Book Your Power Hour</a>
+        </div>
+
+        <!-- LOW 2: AI Toolkit Setup (NEW) -->
+        <div class="card card--pricing featured fade-in">
+          <span class="service-tag service-tag--green">Quick Win</span>
+          <h3 class="card__title">AI Toolkit Setup</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            We set up your personal AI stack — the right tools, configured the right way.
+            ChatGPT, Notion AI, voice assistants, browser extensions — all tuned to how you work.
+          </p>
+          <p class="card__price">$99</p>
+          <p class="card__price-note">One-time · Done in 1–2 days</p>
+          <ul class="card__features">
+            <li>30-minute intake call</li>
+            <li>AI tool selection for your workflow</li>
+            <li>Full installation &amp; configuration</li>
+            <li>Custom prompt templates for your role</li>
+            <li>Quick-start guide + cheat sheet</li>
+          </ul>
+          <a href="contact.html" class="btn btn--primary btn--full-width">Get Set Up</a>
+        </div>
+
+        <!-- LOW 3: Single Workflow Automation -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--green">Done-For-You</span>
+          <h3 class="card__title">Workflow Automation</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            Pick your biggest time-waster — we automate it. One complete workflow,
+            built and deployed in 2–3 days. See AI in action before committing to more.
+          </p>
+          <p class="card__price">$299</p>
+          <p class="card__price-note">One-time · Delivered in 2–3 days</p>
+          <ul class="card__features">
+            <li>30-minute scoping call</li>
+            <li>One fully built automation</li>
+            <li>Up to 3 app integrations</li>
+            <li>Testing &amp; deployment</li>
+            <li>Written documentation</li>
+            <li>7-day post-launch support</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Automate One Thing</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       🟡 MEDIUM TIER — Core Services ($400–$2,000)
+       ============================================================ -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="text-center text-center--margin-bottom-lg">
+        <span class="tier-label tier-label--mid">🟡 Core Services</span>
+        <h2 class="section-title">The Sweet Spot. Real AI Infrastructure.</h2>
+        <p class="section-subtitle section-subtitle--no-margin-bottom">
+          This is where businesses go from "dabbling in AI" to actually running on it.
+          Custom agents, chatbots, and ongoing ops — built around your business.
+        </p>
+      </div>
+
+      <div class="cards-grid fade-in-group cards-grid--constrained">
+
+        <!-- MID 1: AI Chatbot Deploy -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--yellow">Done-For-You</span>
+          <h3 class="card__title">AI Chatbot Deploy</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            A custom AI chatbot on your website — answers questions, captures leads,
+            books appointments. Trained on your business. Live in 48 hours.
+          </p>
+          <p class="card__price">$450</p>
+          <p class="card__price-note">One-time · Live within 48 hours</p>
+          <ul class="card__features">
+            <li>Custom-trained on your business</li>
+            <li>Works on any website platform</li>
+            <li>Lead capture (name, email, phone)</li>
+            <li>Appointment booking integration</li>
+            <li>Branded to match your site</li>
+            <li>14-day post-launch support</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Deploy My Chatbot</a>
+        </div>
+
+        <!-- MID 2: AI Agent Setup (featured) -->
+        <div class="card card--pricing featured fade-in">
+          <span class="service-tag service-tag--yellow">One-Time</span>
+          <h3 class="card__title">AI Agent Setup</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            We design and deploy a custom AI agent stack built around your specific workflows,
+            industry, and goals. Your own AI employee — without the salary.
+          </p>
+          <p class="card__price">$750 – $2,000</p>
+          <p class="card__price-note">One-time · Timeline: 1–2 weeks</p>
+          <ul class="card__features">
+            <li>Business workflow audit</li>
+            <li>Custom agent configuration</li>
+            <li>Integration with your existing tools</li>
+            <li>Testing &amp; quality assurance</li>
+            <li>Handoff + full documentation</li>
+            <li>14-day post-launch support</li>
+          </ul>
+          <a href="contact.html" class="btn btn--primary btn--full-width">Build My Agent</a>
+        </div>
+
+        <!-- MID 3: Monthly AI Ops Retainer -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--yellow">Monthly</span>
+          <h3 class="card__title">AI Ops Retainer</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            Ongoing, done-for-you AI operations. We run your systems, manage your content pipeline,
+            and keep everything working at full power. Like having an AI department on speed dial.
+          </p>
+          <p class="card__price">$400 – $800</p>
+          <p class="card__price-note">Per month · Cancel anytime</p>
+          <ul class="card__features">
+            <li>Monthly strategy session</li>
+            <li>Content &amp; social management</li>
+            <li>Outreach &amp; lead gen automation</li>
+            <li>Agent monitoring &amp; optimization</li>
+            <li>Weekly performance reports</li>
+            <li>Priority response time</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Start Retainer</a>
+        </div>
+
+        <!-- MID 4: AI Content Engine (NEW) -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--yellow">Growth</span>
+          <h3 class="card__title">AI Content Engine</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            We build a complete AI-powered content pipeline — from ideation to scheduling.
+            Blog posts, social media, email sequences — all on autopilot, all in your voice.
+          </p>
+          <p class="card__price">$600</p>
+          <p class="card__price-note">One-time setup · Go live in 5–7 days</p>
+          <ul class="card__features">
+            <li>Brand voice &amp; tone calibration</li>
+            <li>Content calendar framework</li>
+            <li>AI writing pipeline (blog + social + email)</li>
+            <li>Scheduling tool integration</li>
+            <li>30 days of generated content included</li>
+            <li>Training session for your team</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Build My Pipeline</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       🔴 HIGH TIER — Premium ($2,000–$10,000+)
+       ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center text-center--margin-bottom-lg">
+        <span class="tier-label tier-label--high">🔴 Premium</span>
+        <h2 class="section-title">Enterprise-Grade. Small Business Prices.</h2>
+        <p class="section-subtitle section-subtitle--no-margin-bottom">
+          High-touch, high-impact engagements. For businesses ready to go all-in on AI —
+          from full custom builds to a dedicated AI server running 24/7 at your location.
+        </p>
+      </div>
+
+      <div class="cards-grid fade-in-group cards-grid--constrained">
+
+        <!-- HIGH 1: Custom Automation Build -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--red">Custom</span>
+          <h3 class="card__title">Custom Automation Build</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            Complex workflows, multi-system integrations, and bespoke AI logic —
+            engineered end-to-end, exactly how you need it. No templates. No shortcuts.
+          </p>
+          <p class="card__price">$1,500 – $5,000+</p>
+          <p class="card__price-note">Project-based · Timeline: 2–6 weeks</p>
+          <ul class="card__features">
+            <li>Deep discovery &amp; scoping session</li>
+            <li>Architecture &amp; system design</li>
+            <li>Full custom build</li>
+            <li>Multi-tool integration</li>
+            <li>Deployment &amp; launch support</li>
+            <li>30-day post-launch support</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Let's Talk Scope</a>
+        </div>
+
+        <!-- HIGH 2: OpenClaw Mac Mini Server (FEATURED / NEW) -->
+        <div class="card card--pricing card--premium featured fade-in">
+          <span class="service-tag service-tag--red">🖥️ Flagship</span>
+          <h3 class="card__title">On-Site AI Server</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            We install a dedicated Mac Mini at your business running OpenClaw — a private AI
+            server that powers agents, automations, and intelligence 24/7. Your data never
+            leaves your building.
+          </p>
+          <p class="card__price">$1,099 – $1,799</p>
+          <p class="card__price-breakdown">
+            <strong>Hardware:</strong> Mac Mini ($599–$799)<br />
+            <strong>Setup &amp; Install:</strong> $500–$1,000<br />
+            <strong>+ Monthly Service:</strong> $200–$500/mo
+          </p>
+          <p class="card__price-note">One-time + monthly · Installed in 3–5 days</p>
+          <ul class="card__features">
+            <li>Mac Mini hardware (included in price)</li>
+            <li>On-site installation &amp; network config</li>
+            <li>OpenClaw server deployment</li>
+            <li>Custom AI agents configured for your ops</li>
+            <li>Remote monitoring &amp; maintenance</li>
+            <li>Monthly updates &amp; agent management</li>
+            <li>Priority support &amp; troubleshooting</li>
+            <li>Your data stays on your network</li>
+          </ul>
+          <a href="contact.html" class="btn btn--primary btn--full-width">Get Your Own AI Server</a>
+        </div>
+
+        <!-- HIGH 3: Full AI Business Transformation (NEW) -->
+        <div class="card card--pricing fade-in">
+          <span class="service-tag service-tag--red">Enterprise</span>
+          <h3 class="card__title">AI Business Transformation</h3>
+          <p class="card__text card__text--margin-bottom-sm">
+            The full overhaul. We audit every department, rebuild your operations with AI at
+            the core, train your team, and stay on for 90 days to make sure it sticks.
+            This is how you 10x a small business.
+          </p>
+          <p class="card__price">$5,000 – $10,000</p>
+          <p class="card__price-note">Project-based · 4–12 week engagement</p>
+          <ul class="card__features">
+            <li>Full business operations audit</li>
+            <li>AI strategy &amp; implementation roadmap</li>
+            <li>Multi-department automation builds</li>
+            <li>Custom agent ecosystem deployment</li>
+            <li>Staff training &amp; onboarding</li>
+            <li>90-day hands-on support &amp; optimization</li>
+            <li>Quarterly business review</li>
+          </ul>
+          <a href="contact.html" class="btn btn--outline btn--full-width">Transform My Business</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       HOW IT WORKS — 3 Steps
+       ============================================================ -->
+  <section class="section section--alt">
+    <div class="container">
+      <div class="text-center">
+        <span class="section-label">The Process</span>
+        <h2 class="section-title">From First Call to Full Launch.</h2>
+        <p class="section-subtitle">
+          We keep it simple. Three steps and your AI operation is live.
+        </p>
+      </div>
+
+      <div class="steps fade-in-group">
+
+        <!-- Step 1 -->
+        <div class="step fade-in">
+          <div class="step__number">01</div>
+          <h3 class="step__title">Discovery</h3>
+          <p class="step__text">
+            We sit down (or hop on a call) and dig into your business — your goals,
+            your bottlenecks, your current workflow. This shapes everything we build.
+          </p>
+        </div>
+
+        <div class="step-arrow"></div>
+
+        <!-- Step 2 -->
+        <div class="step fade-in">
+          <div class="step__number">02</div>
+          <h3 class="step__title">Build</h3>
+          <p class="step__text">
+            We architect and build your custom AI system — agents, automations,
+            integrations. You get updates throughout. No black boxes.
+          </p>
+        </div>
+
+        <div class="step-arrow"></div>
+
+        <!-- Step 3 -->
+        <div class="step fade-in">
+          <div class="step__number">03</div>
+          <h3 class="step__title">Launch</h3>
+          <p class="step__text">
+            We deploy, test, and hand off — or keep running it for you on retainer.
+            Either way, you leave with a fully operational AI team.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CTA
+       ============================================================ -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner fade-in">
+        <h2 class="cta-banner__title">
+          Not sure which tier?<br />Let's figure it out.
+        </h2>
+        <p class="cta-banner__text">
+          No pressure. No pitch. Just a real conversation about what your business needs
+          and whether ZayOS is the right fit. Every engagement starts with a free 15-minute call.
+        </p>
+        <div class="cta-banner__actions">
+          <a href="contact.html" class="btn btn--primary btn--lg">Get In Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+
+        <div>
+          <div class="footer__brand-logo"></div>
+          <p class="footer__tagline">
+            Your Business. Always On.<br />
+            AI-powered operations built for NYC small businesses.
+          </p>
+          <div class="footer__social">
+            <a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__social-btn" title="X / Twitter" aria-label="Follow ZayOS on X">𝕏</a>
+            <a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__social-btn" title="YouTube" aria-label="Subscribe to ZayOS on YouTube">▶</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Navigation</p>
+          <ul class="footer__links">
+            <li><a href="index.html" class="footer__link" aria-label="Go to Home page">Home</a></li>
+            <li><a href="about.html" class="footer__link" aria-label="Go to About page">About</a></li>
+            <li><a href="services.html" class="footer__link" aria-label="Go to Services page">Services</a></li>
+            <li><a href="contact.html" class="footer__link" aria-label="Go to Contact page">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <ul class="footer__links">
+            <li><a href="mailto:zayosnyc@gmail.com" class="footer__link">zayosnyc@gmail.com</a></li>
+            <li><a href="https://x.com/zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__link">@zayosnyc on X</a></li>
+            <li><a href="https://youtube.com/@zayosnyc" target="_blank" rel="noopener noreferrer" class="footer__link">@zayosnyc on YouTube</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer__divider"></div>
+
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; <span>CIRCA2026</span> ZayOS. All rights reserved.</p>
+        <p class="footer__copy">Built in <span>Queens, NYC</span>.</p>
+      </div>
+    </div>
+  </footer>
+
+    <button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top of page">↑</button>
+
+    <script src="js/main.js"></script>
+
+    <noscript>
+      <div class="noscript-fallback">
+        Please enable JavaScript to get the full experience of this site.
+      </div>
+    </noscript>
+
+</body>
+</html>
+
