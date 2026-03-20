@@ -314,6 +314,17 @@ ul {
     margin: 0 auto;
 }
 
+/* 2-col agent grid — desktop 2x2, mobile 1x1 */
+.cards-grid--2col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 600px) {
+  .cards-grid--2col {
+    grid-template-columns: 1fr;
+  }
+}
+
 .card {
   background-color: var(--bg-dark-alt);
   border: 1px solid var(--border-light);
@@ -648,7 +659,171 @@ ul {
 }
 
 /* ------------------------------------------------------------
-   10. Services Page Styles
+   10. Agent Overlay / Modal
+   ------------------------------------------------------------ */
+
+/* Make team cards feel clickable */
+.card--team {
+  cursor: pointer;
+}
+
+/* Overlay backdrop */
+.agent-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.agent-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Overlay card */
+.agent-overlay__card {
+  position: relative;
+  background-color: var(--bg-dark-alt);
+  border: 1px solid var(--border-purple);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 0 40px rgba(157, 78, 221, 0.25);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.25s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.agent-overlay.active .agent-overlay__card {
+  transform: translateY(0) scale(1);
+}
+
+/* Close button */
+.agent-overlay__close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0;
+}
+
+.agent-overlay__close:hover {
+  color: #fff;
+}
+
+/* Header row: emoji + name/role */
+.agent-overlay__header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.agent-overlay__emoji {
+  font-size: 3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.agent-overlay__name {
+  font-size: 1.8rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.agent-overlay__role {
+  color: var(--purple-accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Description */
+.agent-overlay__desc {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+/* Daily section */
+.agent-overlay__daily {
+  background-color: rgba(157, 78, 221, 0.08);
+  border-left: 3px solid var(--purple-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.agent-overlay__daily-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--purple-accent);
+  margin-bottom: 6px;
+}
+
+.agent-overlay__daily-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Examples list */
+.agent-overlay__examples {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.agent-overlay__examples li {
+  position: relative;
+  padding-left: 24px;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.agent-overlay__examples li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--purple-accent);
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .agent-overlay__card {
+    padding: 28px 20px;
+  }
+  .agent-overlay__name {
+    font-size: 1.4rem;
+  }
+  .agent-overlay__emoji {
+    font-size: 2.2rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   11. Services Page Styles
    ------------------------------------------------------------ */
 .steps {
     display: grid;
@@ -694,7 +869,7 @@ ul {
 }
 
 /* ------------------------------------------------------------
-   11. Polish & Utility
+   12. Polish & Utility
    ------------------------------------------------------------ */
 
 /* Scroll-to-top button */
@@ -753,6 +928,242 @@ ul {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Mobile Responsive Styles (max-width: 768px)
+   ============================================================ */
+
+/* --- Mobile Navigation --- */
+@media (max-width: 768px) {
+  .nav__inner {
+    padding: 0 16px;
+    position: relative;
+  }
+  .nav__toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    order: -1;
+    z-index: 10;
+  }
+  .nav__toggle span {
+    width: 22px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+  .nav__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nav__links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--bg-dark);
+    border-bottom: 1px solid var(--border-light);
+    padding: 16px 0;
+    gap: 0;
+  }
+  .nav__links li {
+    width: 100%;
+  }
+  .nav__link {
+    display: block;
+    padding: 12px 24px;
+    width: 100%;
+  }
+}
+
+/* --- Story Section (About page) --- */
+@media (max-width: 768px) {
+  .story {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .story__visual {
+    order: 2;
+  }
+  .story__content {
+    order: 1;
+  }
+  .story__content .section-title {
+    text-align: center;
+    font-size: 2rem;
+  }
+  .story__content .section-label {
+    text-align: center;
+    display: block;
+  }
+  .story__content p {
+    text-align: center;
+  }
+  .story__content .btn {
+    display: block;
+    text-align: center;
+  }
+  .story__stat-badge {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -15px;
+  }
+  .section-title {
+    font-size: 2rem;
+  }
+  .hero__title {
+    font-size: 2.5rem;
+  }
+  .page-hero__title {
+    font-size: 2.2rem;
+  }
+}
+
+/* --- Contact / General Layout --- */
+@media (max-width: 768px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 0 8px;
+  }
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  .footer__social {
+    justify-content: center;
+  }
+  .footer__bottom {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  .hero__cta-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  .services-preview, .cards-grid, .value-grid {
+    grid-template-columns: 1fr;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  .step-arrow {
+    display: none;
+  }
+
+  /* --- Contact Form Mobile Polish --- */
+  .form {
+    padding: 0 4px;
+  }
+  .form__group {
+    margin-bottom: 20px;
+  }
+  .form__label {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  .form__input,
+  .form__textarea {
+    padding: 16px 18px;
+    font-size: 1rem;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .form__input:focus,
+  .form__textarea:focus {
+    border-color: var(--purple-accent);
+    box-shadow: 0 0 12px var(--purple-glow);
+  }
+  .form__textarea {
+    min-height: 180px;
+  }
+  .form__submit {
+    padding: 18px 24px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+
+  /* Contact info section */
+  .contact-info__title {
+    font-size: 1.6rem;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .contact-info__item {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .social-links {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .social-link {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  /* Page hero breathing room */
+  .page-hero {
+    padding: 100px 16px 50px 16px;
+  }
+  .page-hero__subtitle {
+    font-size: 1rem;
+    padding: 0 8px;
+  }
+
+  /* Section padding on mobile */
+  .section {
+    padding: 50px 0;
+  }
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Cards breathing room */
+  .card {
+    padding: 24px 20px;
+  }
+  .card__title {
+    font-size: 1.2rem;
+  }
+  .card__price {
+    font-size: 1.2rem;
+  }
+
+  /* Service cards */
+  .card--pricing {
+    padding: 28px 22px;
+  }
+  .card__features li {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  .featured {
+    transform: none;
+  }
+
+  /* CTA banner */
+  .cta-banner {
+    padding: 32px 20px;
+    text-align: center;
+  }
+  .cta-banner__title {
+    font-size: 1.6rem;
   }
 }
 

@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setActiveNavLink();
   initContactForm();
   initTypingEffect();
+  initAgentOverlay();
 
 });
 
@@ -304,7 +305,94 @@ function showFormSuccess(form) {
 
 
 /* ============================================================
-   7. TYPING EFFECT
+   7. AGENT OVERLAY
+   Opens a modal with expanded agent details when a
+   .card--team is clicked. Closes on X, backdrop click, or Esc.
+   ============================================================ */
+function initAgentOverlay() {
+  const overlay  = document.getElementById('agentOverlay');
+  const closeBtn = document.getElementById('overlayClose');
+
+  if (!overlay || !closeBtn) return;
+
+  const cards = document.querySelectorAll('.card--team[data-agent-name]');
+  if (!cards.length) return;
+
+  // Elements inside the overlay
+  const elEmoji   = document.getElementById('overlayEmoji');
+  const elName    = document.getElementById('overlayAgentName');
+  const elRole    = document.getElementById('overlayRole');
+  const elDesc    = document.getElementById('overlayDesc');
+  const elDaily   = document.getElementById('overlayDaily');
+  const elExamples = document.getElementById('overlayExamples');
+
+  function openOverlay(card) {
+    const name     = card.dataset.agentName    || '';
+    const role     = card.dataset.agentRole    || '';
+    const emoji    = card.dataset.agentEmoji   || '';
+    const desc     = card.dataset.agentDesc    || '';
+    const daily    = card.dataset.agentDaily   || '';
+    const rawEx    = card.dataset.agentExamples || '[]';
+
+    let examples = [];
+    try { examples = JSON.parse(rawEx); } catch (e) { /* silent */ }
+
+    elEmoji.textContent   = emoji;
+    elName.textContent    = name;
+    elRole.innerHTML      = role;    // may contain &amp;
+    elDesc.textContent    = desc;
+    elDaily.textContent   = daily;
+
+    elExamples.innerHTML = examples
+      .map((ex) => `<li>${ex}</li>`)
+      .join('');
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Focus the close button for accessibility
+    setTimeout(() => closeBtn.focus(), 50);
+  }
+
+  function closeOverlay() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Attach click handlers to each card
+  cards.forEach((card) => {
+    card.addEventListener('click', () => openOverlay(card));
+
+    // Keyboard accessibility: Enter/Space opens overlay
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openOverlay(card);
+      }
+    });
+  });
+
+  // Close button
+  closeBtn.addEventListener('click', closeOverlay);
+
+  // Click outside the card (on the backdrop)
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeOverlay();
+  });
+
+  // Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      closeOverlay();
+    }
+  });
+}
+
+
+/* ============================================================
+   8. TYPING EFFECT
    Subtle typewriter on the hero headline's first line.
    Only runs on the homepage (index.html / root path).
    Non-destructive: if the element doesn't exist, skip it.
