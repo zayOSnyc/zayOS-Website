@@ -236,6 +236,13 @@ ul {
 }
 
 @media (max-width: 768px) {
+  .nav__inner {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    position: relative !important;
+  }
+  
   .nav__toggle {
     display: flex;
     flex-direction: column;
@@ -245,6 +252,7 @@ ul {
     height: 28px;
     cursor: pointer;
     z-index: 1001;
+    order: -1;
   }
   
   .nav__toggle span {
@@ -268,6 +276,13 @@ ul {
     transform: rotate(-45deg) translate(5px, -5px);
   }
   
+  .nav__logo {
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    order: 0;
+  }
+  
   .nav__links {
     display: flex !important;
     position: fixed !important;
@@ -286,6 +301,7 @@ ul {
     opacity: 1 !important;
     pointer-events: auto !important;
     transform: none !important;
+    order: 1;
   }
   
   .nav__links.active {
