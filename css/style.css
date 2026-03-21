@@ -988,52 +988,7 @@ ul {
    Mobile Responsive Styles (max-width: 768px)
    ============================================================ */
 
-/* --- Mobile Navigation --- */
-@media (max-width: 768px) {
-  .nav__inner {
-    padding: 0 16px;
-    position: relative;
-  }
-  .nav__toggle {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    order: -1;
-    z-index: 10;
-  }
-  .nav__toggle span {
-    width: 22px;
-    height: 2px;
-    background: var(--text-primary);
-    transition: all 0.3s ease;
-  }
-  .nav__logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  .nav__links {
-    display: none;
-    position: absolute;
-    top: var(--nav-height);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: var(--bg-dark);
-    border-bottom: 1px solid var(--border-light);
-    padding: 16px 0;
-    gap: 0;
-  }
-  .nav__links li {
-    width: 100%;
-  }
-  .nav__link {
-    display: block;
-    padding: 12px 24px;
-    width: 100%;
-  }
-}
+/* --- Mobile Navigation (handled in nav section above) --- */
 
 /* --- Story Section (About page) --- */
 @media (max-width: 768px) {
