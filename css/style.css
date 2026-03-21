@@ -1184,3 +1184,220 @@ ul {
     text-decoration: underline;
   }
 }
+
+/* ============================================================
+   Desktop Hover-Reveal Navigation
+   ============================================================ */
+@media (min-width: 769px) {
+  .nav--hover-reveal .nav__links {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .nav--hover-reveal:hover .nav__links,
+  .nav--hover-reveal:focus-within .nav__links {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  .nav--hover-reveal .nav__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================================
+   Mobile Slide-In Menu Animation
+   ============================================================ */
+@media (max-width: 768px) {
+  .nav__links {
+    position: fixed;
+    top: var(--nav-height);
+    right: -100%;
+    width: 280px;
+    height: calc(100vh - var(--nav-height));
+    background-color: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    padding: 40px 30px;
+    gap: 24px;
+    transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border-left: 1px solid var(--border-light);
+  }
+  
+  .nav__links.active {
+    right: 0;
+  }
+  
+  .nav__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  
+  .nav__toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  
+  .nav__toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .nav__toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .nav__toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+}
+
+/* ============================================================
+   Mac Mini Add-on Feature Highlight
+   ============================================================ */
+.feature-addon {
+  color: #67e8f9 !important;
+  font-weight: 600;
+  font-size: 0.85rem !important;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(103, 232, 249, 0.3);
+}
+
+/* ============================================================
+   Modal Styles
+   ============================================================ */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.modal__content {
+  position: relative;
+  background: var(--bg-dark-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal__close:hover {
+  color: #fff;
+}
+
+.modal__title {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.modal__text {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.modal__features {
+  margin-bottom: 24px;
+  padding-left: 0;
+}
+
+.modal__features li {
+  color: var(--text-secondary);
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.modal__features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #4ade80;
+}
+
+.modal__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.modal__btn {
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .modal__content {
+    padding: 28px 24px;
+  }
+  
+  .modal__actions {
+    flex-direction: column;
+  }
+  
+  .modal__btn {
+    width: 100%;
+  }
+}
