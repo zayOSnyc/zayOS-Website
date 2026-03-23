@@ -119,6 +119,31 @@
               />
             </div>
 
+            <!-- Tier Interest -->
+            <div class="form__group">
+              <label class="form__label" for="tier">Interested In</label>
+              <select class="form__input" id="tier" name="tier" style="cursor:pointer;">
+                <option value="">— Select a tier (optional) —</option>
+                <option value="free-audit">Free AI Audit</option>
+                <option value="starter">Starter — $499 setup + $149/mo</option>
+                <option value="advanced">Advanced — $999 setup + $199/mo</option>
+                <option value="autonomy">Autonomy — $1,999 setup + $399/mo</option>
+                <option value="not-sure">Not sure yet — help me decide</option>
+              </select>
+            </div>
+
+            <!-- Preferred Date -->
+            <div class="form__group">
+              <label class="form__label" for="preferredDate">Preferred Call Date <span style="font-weight:400; color:var(--text-muted);">(optional)</span></label>
+              <input
+                class="form__input"
+                type="date"
+                id="preferredDate"
+                name="preferredDate"
+                min=""
+              />
+            </div>
+
             <!-- Message -->
             <div class="form__group">
               <label class="form__label" for="message">Message</label>
@@ -286,6 +311,26 @@
 
     <!-- Contact Form Handler -->
     <script>
+      // Auto-select tier from URL query param (?tier=starter etc.)
+      (function() {
+        const params = new URLSearchParams(window.location.search);
+        const tier = params.get('tier');
+        if (tier) {
+          const select = document.getElementById('tier');
+          if (select) {
+            for (let opt of select.options) {
+              if (opt.value === tier) { opt.selected = true; break; }
+            }
+          }
+        }
+        // Set min date for preferred date input to today
+        const dateInput = document.getElementById('preferredDate');
+        if (dateInput) {
+          const today = new Date().toISOString().split('T')[0];
+          dateInput.min = today;
+        }
+      })();
+
       document.getElementById('contactForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -293,7 +338,6 @@
         const submitBtn = form.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         
-        // Disable button and show loading
         submitBtn.disabled = true;
         submitBtn.innerHTML = 'Sending...';
         
@@ -301,6 +345,8 @@
           name: form.name.value,
           email: form.email.value,
           business: form.business.value || null,
+          tier: form.tier.value || null,
+          preferredDate: form.preferredDate.value || null,
           message: form.message.value
         };
         
@@ -314,11 +360,9 @@
           const result = await response.json();
           
           if (response.ok) {
-            // Success
             submitBtn.innerHTML = '✓ Sent!';
             submitBtn.style.background = '#4ade80';
             form.reset();
-            
             setTimeout(() => {
               submitBtn.innerHTML = originalText;
               submitBtn.style.background = '';
@@ -331,7 +375,6 @@
           submitBtn.innerHTML = 'Error — Try Again';
           submitBtn.style.background = '#f87171';
           submitBtn.disabled = false;
-          
           setTimeout(() => {
             submitBtn.innerHTML = originalText;
             submitBtn.style.background = '';
