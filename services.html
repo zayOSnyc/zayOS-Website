@@ -119,10 +119,10 @@
           <button onclick="openTierModal('advanced')" class="btn btn--primary" style="width:100%;">Build My System</button>
         </div>
 
-        <!-- TIER 3 — Autonomy -->
+        <!-- TIER 3 — Premium -->
         <div class="card card--pricing fade-in" style="border-color: rgba(139,139,245,0.4);">
           <span class="service-tag" style="background: rgba(139,139,245,0.15); color: #8b8bf5;">Premium</span>
-          <h3 class="card__title">Autonomy</h3>
+          <h3 class="card__title">Premium</h3>
           <p class="card__text" style="margin-bottom: 12px;">
             A fully custom AI operation built around your business. Deep discovery, custom workflows, hands-on implementation, and ongoing optimization as your business evolves.
           </p>
@@ -137,7 +137,7 @@
             <li>Quarterly business review &amp; strategy</li>
             <li>First in line for new features &amp; builds</li>
           </ul>
-          <button onclick="openTierModal('autonomy')" class="btn btn--outline" style="width:100%; border-color: #8b8bf5; color: #8b8bf5;">Let's Talk</button>
+          <button onclick="openTierModal('premium')" class="btn btn--outline" style="width:100%; border-color: #8b8bf5; color: #8b8bf5;">Get Premium</button>
         </div>
 
       </div>
@@ -145,7 +145,7 @@
       <!-- Comparison note -->
       <div class="text-center" style="margin-top: 40px;">
         <p style="font-size: 0.82rem; color: var(--text-muted);">
-          Not sure which tier? <a href="contact.html" style="color: var(--accent); text-decoration: none;">Book the free audit</a> — we'll tell you exactly what you need.
+          Not sure which tier? <a href="contact.html?tier=free-audit" style="color: var(--accent); text-decoration: none;">Book the free audit</a> — we'll tell you exactly what you need.
         </p>
       </div>
 
@@ -312,13 +312,13 @@
         stripeLink: 'https://buy.stripe.com/7sYbIU5GwbKa41Y08Re7m01',
         callLink: 'contact.html?tier=advanced',
       },
-      autonomy: {
-        label: 'Autonomy',
+      premium: {
+        label: 'Premium',
         tagColor: '#8b8bf5',
         tagBg: 'rgba(139,139,245,0.15)',
         price: '$1,999 setup + $399/mo',
         stripeLink: 'https://buy.stripe.com/28E6oA7OE9C22XU5tbe7m02',
-        callLink: 'contact.html?tier=autonomy',
+        callLink: 'contact.html?tier=premium',
       },
     };
 
