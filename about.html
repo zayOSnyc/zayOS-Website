@@ -74,23 +74,27 @@
 
         <!-- Visual Side -->
         <div class="story__visual fade-in">
-          <div class="story__image-wrapper">
-            <div class="story__image-placeholder">
-              <!-- ZAY logo mark — inline SVG so it always renders -->
-              <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" class="story__logo-svg">
-                <!-- Background circle -->
-                <circle cx="200" cy="200" r="190" fill="rgba(94,23,235,0.12)" stroke="rgba(94,23,235,0.3)" stroke-width="1.5"/>
-                <!-- Z -->
-                <text x="60" y="260" font-family="'Space Grotesk', sans-serif" font-size="180" font-weight="700" fill="#5e17eb" opacity="0.95">Z</text>
-                <!-- Subtle ring -->
-                <circle cx="200" cy="200" r="185" fill="none" stroke="rgba(157,78,221,0.2)" stroke-width="1"/>
-              </svg>
-              <div class="story__logo-text">ZayOS</div>
+          <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+
+            <!-- Stat: 4 Agents -->
+            <div style="background: rgba(94,23,235,0.12); border: 1px solid rgba(94,23,235,0.3); border-radius: 16px; padding: 32px 24px; text-align: center;">
+              <div style="font-size: 4rem; font-weight: 800; color: #9d4edd; line-height: 1;">4</div>
+              <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-top: 8px;">AI Agents on Your Side</div>
+              <div style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">Research. Build. Content. Operations.</div>
             </div>
-          </div>
-          <div class="story__stat-badge">
-            <strong>4</strong>
-            <span>AI Agents<br />On Your Side</span>
+
+            <!-- Stat: 24/7 -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div style="background: rgba(94,23,235,0.08); border: 1px solid rgba(94,23,235,0.2); border-radius: 12px; padding: 20px 16px; text-align: center;">
+                <div style="font-size: 2rem; font-weight: 800; color: #9d4edd; line-height: 1;">24/7</div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px;">Always Running</div>
+              </div>
+              <div style="background: rgba(94,23,235,0.08); border: 1px solid rgba(94,23,235,0.2); border-radius: 12px; padding: 20px 16px; text-align: center;">
+                <div style="font-size: 2rem; font-weight: 800; color: #9d4edd; line-height: 1;">NYC</div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px;">Built Here</div>
+              </div>
+            </div>
+
           </div>
         </div>
 
