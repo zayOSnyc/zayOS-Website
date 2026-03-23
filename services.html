@@ -301,7 +301,7 @@
         tagColor: '#4ade80',
         tagBg: 'rgba(74,222,128,0.15)',
         price: '$499 setup + $149/mo',
-        stripeLink: 'STRIPE_LINK_STARTER', // ← paste your Stripe link here
+        stripeLink: 'https://buy.stripe.com/00w7sE3yo3dE6a6dZHe7m00',
         callLink: 'contact.html?tier=starter',
       },
       advanced: {
@@ -309,7 +309,7 @@
         tagColor: '#8b8bf5',
         tagBg: 'rgba(139,139,245,0.15)',
         price: '$999 setup + $199/mo',
-        stripeLink: 'STRIPE_LINK_ADVANCED', // ← paste your Stripe link here
+        stripeLink: 'https://buy.stripe.com/7sYbIU5GwbKa41Y08Re7m01',
         callLink: 'contact.html?tier=advanced',
       },
       autonomy: {
@@ -317,7 +317,7 @@
         tagColor: '#8b8bf5',
         tagBg: 'rgba(139,139,245,0.15)',
         price: '$1,999 setup + $399/mo',
-        stripeLink: null, // Autonomy = call first always
+        stripeLink: 'https://buy.stripe.com/28E6oA7OE9C22XU5tbe7m02',
         callLink: 'contact.html?tier=autonomy',
       },
     };
@@ -343,9 +343,6 @@
         buyNote.style.display = 'none';
         buyWrapper.style.opacity = '1';
         buyWrapper.style.pointerEvents = 'auto';
-      } else if (!t.stripeLink) {
-        // Autonomy — hide buy now, custom scope needs a call
-        buyWrapper.style.display = 'none';
       } else {
         // Stripe not configured yet — show grayed out with note
         buyBtn.href = '#';
