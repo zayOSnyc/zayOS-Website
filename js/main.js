@@ -8,11 +8,9 @@
    3. Mobile Nav Toggle (Slide-in)
    4. Smooth Scroll
    5. Active Nav Link (page-based)
-   6. Contact Form Handler
+   6. Contact Form (prefill + submit handler)
    7. Typing Effect (hero headline)
-   8. Agent Overlay
-   9. Mac Mini Modal
-   10. Scroll to Top Button
+   8. Scroll to Top Button
    ============================================================ */
 
 'use strict';
@@ -29,8 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setActiveNavLink();
   initContactForm();
   initTypingEffect();
-  initAgentOverlay();
-  initMacMiniModal();
   initScrollTopButton();
 
 });
@@ -199,6 +195,20 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
+  // Auto-select tier from URL query param (?tier=starter etc.)
+  const params = new URLSearchParams(window.location.search);
+  const tierParam = params.get('tier');
+  if (tierParam && form.tier) {
+    for (const opt of form.tier.options) {
+      if (opt.value === tierParam) { opt.selected = true; break; }
+    }
+  }
+
+  // Preferred call date can't be in the past
+  if (form.preferredDate) {
+    form.preferredDate.min = new Date().toISOString().split('T')[0];
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -212,20 +222,26 @@ function initContactForm() {
     const data = {
       name: form.name.value,
       email: form.email.value,
-      business: form.business.value || null,
-      message: form.message.value
+      business: form.business.value || 'Not provided',
+      tier: form.tier ? form.tier.value || 'Not selected' : 'Not selected',
+      preferredDate: form.preferredDate ? form.preferredDate.value || 'Not provided' : 'Not provided',
+      message: form.message.value,
+      _subject: 'New ZayOS website inquiry',
+      _replyto: form.email.value,
+      _template: 'table'
     };
 
     try {
-      const response = await fetch('https://zay123.tail9c6ba3.ts.net/api/contact', {
+      const response = await fetch('https://formsubmit.co/ajax/founder@zayos.info', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(data)
       });
 
       const result = await response.json();
 
-      if (response.ok) {
+      // FormSubmit returns HTTP 200 with success:"false" when not delivered
+      if (response.ok && String(result.success) === 'true') {
         submitBtn.innerHTML = '✓ Sent!';
         submitBtn.style.background = '#4ade80';
         form.reset();
@@ -321,130 +337,7 @@ function initTypingEffect() {
 
 
 /* ============================================================
-   8. AGENT OVERLAY
-   ============================================================ */
-function initAgentOverlay() {
-  const overlay  = document.getElementById('agentOverlay');
-  const closeBtn = document.getElementById('overlayClose');
-
-  if (!overlay || !closeBtn) return;
-
-  const cards = document.querySelectorAll('.card--team[data-agent-name]');
-  if (!cards.length) return;
-
-  const elEmoji   = document.getElementById('overlayEmoji');
-  const elName    = document.getElementById('overlayAgentName');
-  const elRole    = document.getElementById('overlayRole');
-  const elDesc    = document.getElementById('overlayDesc');
-  const elDaily   = document.getElementById('overlayDaily');
-  const elExamples = document.getElementById('overlayExamples');
-
-  function openOverlay(card) {
-    const name     = card.dataset.agentName    || '';
-    const role     = card.dataset.agentRole    || '';
-    const emoji    = card.dataset.agentEmoji   || '';
-    const desc     = card.dataset.agentDesc    || '';
-    const daily    = card.dataset.agentDaily   || '';
-    const rawEx    = card.dataset.agentExamples || '[]';
-
-    let examples = [];
-    try { examples = JSON.parse(rawEx); } catch (e) { /* silent */ }
-
-    elEmoji.textContent   = emoji;
-    elName.textContent    = name;
-    elRole.innerHTML      = role;
-    elDesc.textContent    = desc;
-    elDaily.textContent   = daily;
-
-    elExamples.innerHTML = examples
-      .map((ex) => `<li>${ex}</li>`)
-      .join('');
-
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    setTimeout(() => closeBtn.focus(), 50);
-  }
-
-  function closeOverlay() {
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  cards.forEach((card) => {
-    card.addEventListener('click', () => openOverlay(card));
-    card.setAttribute('tabindex', '0');
-    card.setAttribute('role', 'button');
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openOverlay(card);
-      }
-    });
-  });
-
-  closeBtn.addEventListener('click', closeOverlay);
-
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeOverlay();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('active')) {
-      closeOverlay();
-    }
-  });
-}
-
-
-/* ============================================================
-   9. MAC MINI MODAL (Services Page)
-   ============================================================ */
-function initMacMiniModal() {
-  const modal = document.getElementById('macMiniModal');
-  if (!modal) return;
-
-  const backdrop = modal.querySelector('.modal__backdrop');
-  const closeBtn = modal.querySelector('.modal__close');
-  const noThanksBtn = document.getElementById('modalNoThanks');
-  const ctaButtons = document.querySelectorAll('.service-cta[data-tier]');
-
-  function openModal(tier) {
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  // Attach to service CTA buttons (Tier 3-6)
-  ctaButtons.forEach((btn) => {
-    const tier = parseInt(btn.dataset.tier);
-    if (tier >= 3) {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openModal(tier);
-      });
-    }
-  });
-
-  // Close handlers
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (backdrop) backdrop.addEventListener('click', closeModal);
-  if (noThanksBtn) noThanksBtn.addEventListener('click', closeModal);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-      closeModal();
-    }
-  });
-}
-
-
-/* ============================================================
-   10. SCROLL TO TOP BUTTON
+   8. SCROLL TO TOP BUTTON
    ============================================================ */
 function initScrollTopButton() {
   const btn = document.getElementById('scrollTopBtn');

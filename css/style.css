@@ -388,17 +388,6 @@ ul {
     margin: 0 auto;
 }
 
-/* 2-col agent grid — desktop 2x2, mobile 1x1 */
-.cards-grid--2col {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-@media (max-width: 600px) {
-  .cards-grid--2col {
-    grid-template-columns: 1fr;
-  }
-}
-
 .card {
   background-color: var(--bg-dark-alt);
   border: 1px solid var(--border-light);
@@ -445,6 +434,21 @@ ul {
 .card--pricing {
     display: flex;
     flex-direction: column;
+}
+
+/* Pill tag on cards ("Available Now", "Coming Soon", etc.) */
+.service-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(157, 78, 221, 0.15);
+  color: var(--purple-accent);
+  border: 1px solid rgba(157, 78, 221, 0.3);
 }
 
 .card--pricing .btn {
@@ -728,176 +732,8 @@ ul {
     margin-top: 16px;
 }
 
-.card--team .card__text {
-    margin-top: 14px;
-}
-
 /* ------------------------------------------------------------
-   10. Agent Overlay / Modal
-   ------------------------------------------------------------ */
-
-/* Make team cards feel clickable */
-.card--team {
-  cursor: pointer;
-}
-
-/* Overlay backdrop */
-.agent-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 24px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
-
-.agent-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Overlay card */
-.agent-overlay__card {
-  position: relative;
-  background-color: var(--bg-dark-alt);
-  border: 1px solid var(--border-purple);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  max-width: 560px;
-  width: 100%;
-  box-shadow: 0 0 40px rgba(157, 78, 221, 0.25);
-  transform: translateY(20px) scale(0.97);
-  transition: transform 0.25s ease;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-.agent-overlay.active .agent-overlay__card {
-  transform: translateY(0) scale(1);
-}
-
-/* Close button */
-.agent-overlay__close {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.8rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: color 0.2s ease;
-  padding: 0;
-}
-
-.agent-overlay__close:hover {
-  color: #fff;
-}
-
-/* Header row: emoji + name/role */
-.agent-overlay__header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.agent-overlay__emoji {
-  font-size: 3rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.agent-overlay__name {
-  font-size: 1.8rem;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.agent-overlay__role {
-  color: var(--purple-accent);
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-/* Description */
-.agent-overlay__desc {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 24px;
-}
-
-/* Daily section */
-.agent-overlay__daily {
-  background-color: rgba(157, 78, 221, 0.08);
-  border-left: 3px solid var(--purple-accent);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  padding: 14px 18px;
-  margin-bottom: 20px;
-}
-
-.agent-overlay__daily-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--purple-accent);
-  margin-bottom: 6px;
-}
-
-.agent-overlay__daily-text {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* Examples list */
-.agent-overlay__examples {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.agent-overlay__examples li {
-  position: relative;
-  padding-left: 24px;
-  color: var(--text-primary);
-  font-size: 0.95rem;
-}
-
-.agent-overlay__examples li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--purple-accent);
-  font-weight: 700;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .agent-overlay__card {
-    padding: 28px 20px;
-  }
-  .agent-overlay__name {
-    font-size: 1.4rem;
-  }
-  .agent-overlay__emoji {
-    font-size: 2.2rem;
-  }
-}
-
-/* ------------------------------------------------------------
-   11. Services Page Styles
+   10. Services Page Styles
    ------------------------------------------------------------ */
 .steps {
     display: grid;
@@ -1240,139 +1076,3 @@ ul {
 }
 
 /* Mobile Slide-In handled in nav section above */
-
-/* ============================================================
-   Mac Mini Add-on Feature Highlight
-   ============================================================ */
-.feature-addon {
-  color: #67e8f9 !important;
-  font-weight: 600;
-  font-size: 0.85rem !important;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px dashed rgba(103, 232, 249, 0.3);
-}
-
-/* ============================================================
-   Modal Styles
-   ============================================================ */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.modal.active {
-  display: flex;
-}
-
-.modal__backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-}
-
-.modal__content {
-  position: relative;
-  background: var(--bg-dark-alt);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 40px;
-  max-width: 500px;
-  width: 100%;
-  animation: modalSlideIn 0.3s ease;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.modal__close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.modal__close:hover {
-  color: #fff;
-}
-
-.modal__title {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
-}
-
-.modal__text {
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-  line-height: 1.6;
-}
-
-.modal__features {
-  margin-bottom: 24px;
-  padding-left: 0;
-}
-
-.modal__features li {
-  color: var(--text-secondary);
-  padding: 8px 0;
-  padding-left: 24px;
-  position: relative;
-}
-
-.modal__features li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #4ade80;
-}
-
-.modal__actions {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.modal__btn {
-  flex: 1;
-  min-width: 180px;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .modal__content {
-    padding: 28px 24px;
-  }
-  
-  .modal__actions {
-    flex-direction: column;
-  }
-  
-  .modal__btn {
-    width: 100%;
-  }
-}
